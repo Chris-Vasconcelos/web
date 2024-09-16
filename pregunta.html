@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="css/estilprin.css">
+    <title>¿Aceptas?</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+</head>
+
+<body>
+    <div class="contenedor">
+        <div class="corazones">
+            <div class="corazon"></div>
+            <div class="corazon"></div>
+            <div class="corazon"></div>
+        </div>
+        <div class="pregunta-container">
+            <h2 class="pregunta">¿Aceptas?</h2>
+            <div class="audio">
+                <audio autoplay controls>
+                    <source src="cancioncita.mp3" type="audio/mpeg">
+                </audio>
+            </div>
+            <!-- Formulario -->
+            <form id="respuesta-form" action="php/procesar_respuesta.php" method="post">
+
+
+                <!-- Botón Sí envía el formulario -->
+                <input type="submit" class="boton-romantico" name="btnSi" id="btnSi" value="Sí" />
+                <!-- Botón No se mueve al intentar hacer clic -->
+                <input type="button" id="btnNo" class="boton-romantico" value="No" />
+            </form>
+        </div>
+    </div>
+
+    <script>
+       // Función para enviar el formulario y mostrar mensaje de confirmación
+  async function enviarRespuesta() {
+    const form = document.getElementById('respuesta-form');
+    const formData = new FormData(form);
+
+    try {
+      const response = await fetch('php/procesar_respuesta.php', {
+        method: 'POST',
+        body: formData
+      });
+
+      if (response.ok) {
+        // Redirigir a index/index.html
+        window.location.href = 'index/index.html';
+      } else {
+        alert('Hubo un problema al enviar la respuesta.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('Hubo un error al enviar la respuesta.');
+    }
+  }
+
+  // Agregar evento al botón "Sí"
+  document.getElementById('btnSi').addEventListener('click', enviarRespuesta);
+
+        // Función para mover el botón "No"
+        function mueveElBoton() {
+            const botonNo = document.getElementById('btnNo');
+            const x = Math.random() * (window.innerWidth - botonNo.offsetWidth);
+            const y = Math.random() * (window.innerHeight - botonNo.offsetHeight);
+            botonNo.style.position = 'absolute';
+            botonNo.style.left = x + 'px';
+            botonNo.style.top = y + 'px';
+        }
+
+
+        // Agregar el evento de movimiento al botón "No"
+        document.getElementById('btnNo').addEventListener('mouseover', mueveElBoton);
+    </script>
+</body>
+
+</html> 
